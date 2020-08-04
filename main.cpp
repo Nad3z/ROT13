@@ -50,11 +50,11 @@ std::string decipher(std::string input) {
 int main() {
     while(true) {
         int choice;
-        std::cout << "0. Cipher\n1. Decipher\n>>> ";
+        std::cout << "0. Cipher\n1. Decipher\nEnter a number\n>>> ";
         std::cin >> choice;
 
         std::string input;
-        std::cout << "Enter string: ";
+        std::cout << "Enter a string\n>>> ";
         std::cin.get();
         getline(std::cin, input);
 
