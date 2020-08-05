@@ -32,6 +32,9 @@ int main() {
             ss >> text;
             std::cout << rot13.decipher(text) << std::endl;
         }
+        else if(command == "help") {
+            std::cout << "layout: [Command],[Alias] {Args}\n\n        [Cipher],[c] {Word}\n        [Decipher],[d] {Word}" << std::endl; 
+        }
         else if(command != "quit") {
             std::cout << "Unknown command!" << std::endl;
         }
