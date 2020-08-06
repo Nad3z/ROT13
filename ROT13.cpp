@@ -8,29 +8,30 @@ bool checkIfCapital(char l) {
     return false;
 }
 
-char calcUp(char l, int low, int high) {
-    if (l + 13 > high)
-        return (low - 1) + (13 + (l - high));
+char calcUp(char l, int ammount, int low, int high) {
+    if(l + ammount > high)
+        return (low - 1) + (ammount + (l - high));
     else
-        return l + 13;
+        return l + ammount;
 }
 
-char calcDown(char l, int low, int high) {
-    if (l - 13 < low)
-        return (high + 1) - (13 - (l - low));
+char calcDown(char l, int ammount, int low, int high) {
+    if(l - ammount < low)
+        return (high + 1) - (ammount - (l - low));
     else
-        return l - 13;
+        return l - ammount;
 }
 
 std::string ROT13::cipher(std::string input) {
     std::string output;
 
     for(int i = 0; i < input.length(); i++) {
-        if(checkIfCapital(input[i])) {
-            output += calcUp(input[i], 65, 90);
+        if(std::isdigit(input[i])) output += input[i];
+        else if(checkIfCapital(input[i])) {
+            output += calcUp(input[i], 13, 65, 90);
         }
         else {
-            output += calcUp(input[i], 97, 122);
+            output += calcUp(input[i], 13, 97, 122);
         }
     }
 
@@ -41,11 +42,12 @@ std::string ROT13::decipher(std::string input) {
     std::string output;
 
     for(int i = 0; i < input.length(); i++) {
-        if(checkIfCapital(input[i])) {
-            output += calcDown(input[i], 65, 90);
+        if(std::isdigit(input[i])) output += input[i];
+        else if(checkIfCapital(input[i])) {
+            output += calcDown(input[i], 13, 65, 90);
         }
         else {
-            output += calcDown(input[i], 97, 122);
+            output += calcDown(input[i], 13, 97, 122);
         }
     }
 
