@@ -1,6 +1,6 @@
 #include "ROT13.h"
 
-bool checkIfCapital(char l) {
+bool isCapital(char l) {
     if(l >= 65 && l <= 90) {
         return true;
     }
@@ -8,47 +8,20 @@ bool checkIfCapital(char l) {
     return false;
 }
 
-char calcUp(char l, int ammount, int low, int high) {
-    if(l + ammount > high)
-        return (low - 1) + (ammount + (l - high));
-    else
-        return l + ammount;
-}
-
-char calcDown(char l, int ammount, int low, int high) {
-    if(l - ammount < low)
-        return (high + 1) - (ammount - (l - low));
-    else
-        return l - ammount;
-}
-
-std::string ROT13::cipher(std::string input) {
+std::string ROT13::cipher(std::string input, int variant) {
     std::string output;
 
-    for(int i = 0; i < input.length(); i++) {
-        if(std::isdigit(input[i])) output += input[i];
-        else if(checkIfCapital(input[i])) {
-            output += calcUp(input[i], 13, 65, 90);
-        }
-        else {
-            output += calcUp(input[i], 13, 97, 122);
-        }
-    }
-
-    return output;
-}
-
-std::string ROT13::decipher(std::string input) {
-    std::string output;
-
-    for(int i = 0; i < input.length(); i++) {
-        if(std::isdigit(input[i])) output += input[i];
-        else if(checkIfCapital(input[i])) {
-            output += calcDown(input[i], 13, 65, 90);
-        }
-        else {
-            output += calcDown(input[i], 13, 97, 122);
-        }
+    for(int i = 0; i < (int)input.length(); i++) {
+        if(std::isdigit(input[i]) && (variant == 5 || variant == 18))
+            output += input[i] >= 53 ? input[i] - 5 : input[i] + 5;
+        else if(!std::isdigit(input[i]) && variant == 5)
+            output += input[i];
+        else if(std::isdigit(input[i]) && variant != 5)
+            output += input[i];
+        else if(isCapital(input[i]) && (variant == 13 || variant == 18))
+            output += input[i] >= 78 ? input[i] - 13 : input[i] + 13;
+        else if(!isCapital(input[i]) && (variant == 13 || variant == 18))
+            output += input[i] <= 109 ? input[i] + 13 : input[i] - 13;
     }
 
     return output;
