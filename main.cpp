@@ -29,13 +29,13 @@ int main() {
             std::cout << rot13.cipher(text, std::stoi(variant)) << std::endl;
         }
         else if(command == "rot") {
-            if(text == "5" || text == "13" || text == "18")
+            if(text == "5" || text == "13" || text == "18" || text == "47")
                 variant = text;
             else
                 std::cout << "Unknown variant!" << std::endl;
         }
         else if(command == "help") {
-            std::cout << "layout: [Command],[Alias] {Args}\n\n        [cipher],[c] {Word}\n        [rot] {Variant/Number} // Available variants: 5, 13, 18\n        [quit]" << std::endl;
+            std::cout << "layout: [Command],[Alias] {Args}\n\n        [cipher],[c] {Word}\n        [rot],[r] {Variant/Number} // Available variants: 5, 13, 18, 47\n        [quit]" << std::endl;
         }
         else if(command != "quit") {
             std::cout << "Unknown command!" << std::endl;
