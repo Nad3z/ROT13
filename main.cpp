@@ -25,10 +25,10 @@ int main() {
         ss << input;
         ss >> command >> text;
 
-        if(command == "c" or command == "cipher") {
+        if(command == "c" || command == "cipher") {
             std::cout << rot13.cipher(text, std::stoi(variant)) << std::endl;
         }
-        else if(command == "rot") {
+        else if(command == "r" || command == "rot") {
             if(text == "5" || text == "13" || text == "18" || text == "47")
                 variant = text;
             else
