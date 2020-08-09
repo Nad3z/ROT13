@@ -23,12 +23,15 @@ int main() {
         getline(std::cin, input);
 
         ss << input;
-        ss >> command >> text;
+        ss >> command;
 
         if(command == "c" || command == "cipher") {
+            getline(ss, text);
+            text.erase(0, 1);
             std::cout << rot13.cipher(text, std::stoi(variant)) << std::endl;
         }
         else if(command == "r" || command == "rot") {
+            ss >> text;
             if(text == "5" || text == "13" || text == "18" || text == "47")
                 variant = text;
             else
