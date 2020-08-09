@@ -19,7 +19,7 @@ std::string ROT13::cipher(std::string input, int variant) {
         else if(!isCapital(input[i]) && !std::isdigit(input[i]) && (variant == 13 || variant == 18))
             output += input[i] <= 109 ? input[i] + 13 : input[i] - 13;
         else if(variant == 47)
-            output += input[i] >= 80 ? input[i] - 47 : input[i] + 47;
+            output += input[i] >= 79 ? input[i] - 47 : input[i] + 47;
         else
             output += input[i];
     }
