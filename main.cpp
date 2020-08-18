@@ -2,15 +2,28 @@
 #include <sstream>
 #include <string>
 
-#include "ROT13.h"
+std::string cipher(std::string input, std::string variant) {
+    std::string output;
+
+    for(int i = 0; i < (int)input.length(); i++) {
+        if(std::isdigit(input[i]) && (variant == "5" || variant == "18"))
+            output += input[i] >= 53 ? input[i] - 5 : input[i] + 5;
+        else if((input[i] >= 65 && input[i] <= 90) && !std::isdigit(input[i]) && (variant == "13" || variant == "18"))
+            output += input[i] >= 78 ? input[i] - 13 : input[i] + 13;
+        else if((input[i] >= 97 && input[i] <= 122) && !std::isdigit(input[i]) && (variant == "13" || variant == "18"))
+            output += input[i] <= 109 ? input[i] + 13 : input[i] - 13;
+        else if((input[i] >= 33 && input[i] <= 126) && variant == "47")
+            output += input[i] >= 79 ? input[i] - 47 : input[i] + 47;
+        else
+            output += input[i];
+    }
+
+    return output;
+}
 
 int main() {
-    ROT13 rot13 = ROT13();
-    std::string command;
-    std::string input;
+    std::string command, input, text, variant = "13";
     std::stringstream ss;
-    std::string text;
-    std::string variant = "13";
 
     std::cout << "Use the \"help\" command to see available commands." << std::endl;
 
@@ -28,7 +41,7 @@ int main() {
         if(command == "c" || command == "cipher") {
             getline(ss, text);
             text.erase(0, 1);
-            std::cout << rot13.cipher(text, std::stoi(variant)) << std::endl;
+            std::cout << cipher(text, variant) << std::endl;
         }
         else if(command == "r" || command == "rot") {
             ss >> text;
