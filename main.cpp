@@ -2,35 +2,19 @@
 #include <sstream>
 #include <string>
 
-std::string cipher(std::string input, std::string variant) {
-    std::string output;
-
-    for(int i = 0; i < (int)input.length(); i++) {
-        if(std::isdigit(input[i]) && (variant == "5" || variant == "18"))
-            output += input[i] >= 53 ? input[i] - 5 : input[i] + 5;
-        else if((input[i] >= 65 && input[i] <= 90) && !std::isdigit(input[i]) && (variant == "13" || variant == "18"))
-            output += input[i] >= 78 ? input[i] - 13 : input[i] + 13;
-        else if((input[i] >= 97 && input[i] <= 122) && !std::isdigit(input[i]) && (variant == "13" || variant == "18"))
-            output += input[i] <= 109 ? input[i] + 13 : input[i] - 13;
-        else if((input[i] >= 33 && input[i] <= 126) && variant == "47")
-            output += input[i] >= 79 ? input[i] - 47 : input[i] + 47;
-        else
-            output += input[i];
-    }
-
-    return output;
-}
-
 int main() {
-    std::string command, input, text, variant = "13";
-    std::stringstream ss;
+    int variant = 13;
+    bool running = true;
 
-    std::cout << "Use the \"help\" command to see available commands." << std::endl;
+    std::cout << "Use the \"/help\" command to see available commands." << std::endl;
 
-    while(command != "quit") {
-        command = "";
+    while(running) {
+        std::string input, command;
+        std::stringstream ss;
+
         input = "";
-        ss.clear();
+        command = "";
+        ss.str(std::string());
 
         std::cout << ">>> ";
         getline(std::cin, input);
@@ -38,25 +22,82 @@ int main() {
         ss << input;
         ss >> command;
 
-        if(command == "c" || command == "cipher") {
-            getline(ss, text);
-            text.erase(0, 1);
-            std::cout << cipher(text, variant) << std::endl;
+        if(command[0] == '/') {
+            command.erase(0, 1);
+
+            if(command == "rot") {
+                int oldVariant = variant;
+                ss >> variant;
+                if(variant == 5 || variant == 13 || variant == 18 || variant == 47)
+                    std::cout << std::endl << "Success: Variant changed to " << variant << std::endl << std::endl;
+                else {
+                    std::cout << std::endl << "ERROR: Unknown variant!" << std::endl << std::endl;
+                    variant = oldVariant;
+                }
+            }
+            else if(command == "help") {
+                std::cout << "layout: /Command {Args} | Description\n\n/Help | Show all available commands\n/Rot {Variant/Number} | Switch variant, available variants: {5, 13, 18, 47}\n/Quit | Stop the program" << std::endl;
+            }
+            else if(command == "quit") {
+                running = false;
+            }
         }
-        else if(command == "r" || command == "rot") {
-            ss >> text;
-            if(text == "5" || text == "13" || text == "18" || text == "47")
-                variant = text;
-            else
-                std::cout << "Unknown variant!" << std::endl;
+        else {
+            for(size_t i = 0; i < input.length(); i++) {
+                switch(variant) {
+                    case(5):
+                        if(input[i] >= 48 && input[i] <= 57) {
+                            std::cout << (char)(input[i] >= 53 ? input[i] - 5 : input[i] + 5);
+                            break;
+                        }
+                        else {
+                            std::cout << input[i];
+                            break;
+                        }
+                    case(13):
+                        if(input[i] >= 65 && input[i] <= 90) {
+                            std::cout << (char)(input[i] >= 78 ? input[i] - 13 : input[i] + 13);
+                            break;
+                        }
+                        else if(input[i] >= 97 && input[i] <= 122) {
+                            std::cout << (char)(input[i] <= 109 ? input[i] + 13 : input[i] - 13);
+                            break;
+                        }
+                        else {
+                            std::cout << input[i];
+                        }
+                    case(18):
+                        if(input[i] >= 48 && input[i] <= 57) {
+                            std::cout << (char)(input[i] >= 53 ? input[i] - 5 : input[i] + 5);
+                            break;
+                        }
+                        else if(input[i] >= 65 && input[i] <= 90) {
+                            std::cout << (char)(input[i] >= 78 ? input[i] - 13 : input[i] + 13);
+                            break;
+                        }
+                        else if(input[i] >= 97 && input[i] <= 122) {
+                            std::cout << (char)(input[i] <= 109 ? input[i] + 13 : input[i] - 13);
+                            break;
+                        }
+                        else {
+                            std::cout << input[i];
+                            break;
+                        }
+                    case(47):
+                        if(input[i] >= 33 && input[i] <= 126) {
+                            std::cout << (char)(input[i] >= 79 ? input[i] - 47 : input[i] + 47);
+                            break;
+                        }
+                        else {
+                            std::cout << input[i];
+                            break;
+                        }
+                    }
+                }
+
+                std::cout << std::endl;
+            }
         }
-        else if(command == "help") {
-            std::cout << "layout: [Command],[Alias] {Args}\n\n        [cipher],[c] {Word}\n        [rot],[r] {Variant/Number} // Available variants: 5, 13, 18, 47\n        [quit]" << std::endl;
-        }
-        else if(command != "quit") {
-            std::cout << "Unknown command!" << std::endl;
-        }
-    }
 
     return 0;
 }
