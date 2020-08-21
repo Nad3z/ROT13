@@ -3,15 +3,14 @@
 #include <string>
 
 int main() {
+    std::string input, command;
+    std::stringstream ss;
     int variant = 13;
     bool running = true;
 
     std::cout << "Use the \"/help\" command to see available commands." << std::endl;
 
     while(running) {
-        std::string input, command;
-        std::stringstream ss;
-
         input = "";
         command = "";
         ss.str(std::string());
@@ -92,12 +91,12 @@ int main() {
                             std::cout << input[i];
                             break;
                         }
-                    }
                 }
-
-                std::cout << std::endl;
             }
-        }
 
-    return 0;
+        std::cout << std::endl;
+        }
+    }
+
+return 0;
 }
