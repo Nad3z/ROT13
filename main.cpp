@@ -1,19 +1,21 @@
+/*
+Nad3z's ROT13
+https://en.wikipedia.org/wiki/ROT13
+*/
+
 #include <iostream>
 #include <sstream>
 #include <string>
 
 int main() {
-    std::string input, command;
-    std::stringstream ss;
     int variant = 13;
     bool running = true;
 
     std::cout << "Use the \"/help\" command to see available commands." << std::endl;
 
     while(running) {
-        input = "";
-        command = "";
-        ss.str(std::string());
+        std::string input, command;
+        std::stringstream ss;
 
         std::cout << ">>> ";
         getline(std::cin, input);
