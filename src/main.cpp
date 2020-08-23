@@ -66,6 +66,7 @@ int main() {
                         }
                         else {
                             std::cout << input[i];
+                            break;
                         }
                     case(18):
                         if(input[i] >= 48 && input[i] <= 57) {
