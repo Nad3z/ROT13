@@ -37,13 +37,20 @@ int main() {
                 }
             }
             else if(command == "help") {
-                std::cout << "layout: /Command {Args} | Description\n\n/Help | Show all available commands\n/Rot {Variant/Number} | Switch variant, available variants: {5, 13, 18, 47}\n/Quit | Stop the program" << std::endl;
+                std::cout << std::endl << "layout: /command {args} | Description\n\n"
+                                          "/help                   | Show all available commands\n"
+                                          "/rot {variant/number}   | Switch variant, available variants: {5, 13, 18, 47}\n"
+                                          "/quit                   | Stop the program" << std::endl << std::endl;
             }
             else if(command == "quit") {
                 running = false;
             }
+            else {
+                std::cout << std::endl << "ERROR: Unknown command!" << std::endl << std::endl;
+            }
         }
         else {
+            std::cout << std::endl;
             for(size_t i = 0; i < input.length(); i++) {
                 switch(variant) {
                     case(5):
@@ -96,10 +103,8 @@ int main() {
                         }
                 }
             }
-
-        std::cout << std::endl;
+            std::cout << std::endl << std::endl;
         }
     }
-
-return 0;
+    return 0;
 }
