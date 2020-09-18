@@ -1,110 +1,48 @@
-/*
-Nad3z's ROT13
-https://en.wikipedia.org/wiki/ROT13
-*/
-
+#include "rot.h"
+#include <string.h>
+#include <algorithm>
+#include <iterator>
 #include <iostream>
-#include <sstream>
-#include <string>
 
-int main() {
+std::string parseArgs(int start, int end, char* argv[]) {
+    std::string output = "";
+
+    for (int i = start; i < end; i++) {
+        output += argv[i];
+        if (i < end - 1) { output += " "; }
+        else { output += "\n"; }
+    }
+
+    return output;
+}
+
+int main(int argc, char* argv[]) {
+    Rot rot;
     int variant = 13;
-    bool running = true;
+    int availableVariants[4] = {5, 13, 18, 47};
 
-    std::cout << "Use the \"/help\" command to see available commands." << std::endl;
-
-    while(running) {
-        std::string input, command;
-        std::stringstream ss;
-
-        std::cout << ">>> ";
-        getline(std::cin, input);
-
-        ss << input;
-        ss >> command;
-
-        if(command[0] == '/') {
-            command.erase(0, 1);
-
-            if(command == "rot") {
-                int oldVariant = variant;
-                ss >> variant;
-                if(variant == 5 || variant == 13 || variant == 18 || variant == 47)
-                    std::cout << std::endl << "Success: Variant changed to " << variant << std::endl << std::endl;
-                else {
-                    std::cout << std::endl << "ERROR: Unknown variant!" << std::endl << std::endl;
-                    variant = oldVariant;
-                }
+    if (argc >= 2) {
+        if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0){
+            std::cout << "Usage: rot13 [OPTION]...\n\n"
+                         "Options:\n"
+                         "  --help, -h            Show this help message.\n"
+                         "  --variant, -v=i       Change the variant [5, 13, 18, 47] (Default: 13).\n";
+            return 0;
+        } else if (strcmp(argv[1], "--variant") == 0 || strcmp(argv[1], "-v") == 0) {
+            try {
+                variant = std::stoi(argv[2]);
+                if (std::find(std::begin(availableVariants), std::end(availableVariants), variant) == std::end(availableVariants)) { throw 505; }
+            } catch(...){
+                std::cout << "Invalid variant!" << std::endl;
             }
-            else if(command == "help") {
-                std::cout << std::endl << "layout: /command {args} | Description\n\n"
-                                          "/help                   | Show all available commands\n"
-                                          "/rot {variant/number}   | Switch variant, available variants: {5, 13, 18, 47}\n"
-                                          "/quit                   | Stop the program" << std::endl << std::endl;
-            }
-            else if(command == "quit") {
-                running = false;
-            }
-            else {
-                std::cout << std::endl << "ERROR: Unknown command!" << std::endl << std::endl;
-            }
-        }
-        else {
-            std::cout << std::endl;
-            for(size_t i = 0; i < input.length(); i++) {
-                switch(variant) {
-                    case(5):
-                        if(input[i] >= 48 && input[i] <= 57) {
-                            std::cout << (char)(input[i] >= 53 ? input[i] - 5 : input[i] + 5);
-                            break;
-                        }
-                        else {
-                            std::cout << input[i];
-                            break;
-                        }
-                    case(13):
-                        if(input[i] >= 65 && input[i] <= 90) {
-                            std::cout << (char)(input[i] >= 78 ? input[i] - 13 : input[i] + 13);
-                            break;
-                        }
-                        else if(input[i] >= 97 && input[i] <= 122) {
-                            std::cout << (char)(input[i] <= 109 ? input[i] + 13 : input[i] - 13);
-                            break;
-                        }
-                        else {
-                            std::cout << input[i];
-                            break;
-                        }
-                    case(18):
-                        if(input[i] >= 48 && input[i] <= 57) {
-                            std::cout << (char)(input[i] >= 53 ? input[i] - 5 : input[i] + 5);
-                            break;
-                        }
-                        else if(input[i] >= 65 && input[i] <= 90) {
-                            std::cout << (char)(input[i] >= 78 ? input[i] - 13 : input[i] + 13);
-                            break;
-                        }
-                        else if(input[i] >= 97 && input[i] <= 122) {
-                            std::cout << (char)(input[i] <= 109 ? input[i] + 13 : input[i] - 13);
-                            break;
-                        }
-                        else {
-                            std::cout << input[i];
-                            break;
-                        }
-                    case(47):
-                        if(input[i] >= 33 && input[i] <= 126) {
-                            std::cout << (char)(input[i] >= 79 ? input[i] - 47 : input[i] + 47);
-                            break;
-                        }
-                        else {
-                            std::cout << input[i];
-                            break;
-                        }
-                }
-            }
-            std::cout << std::endl << std::endl;
+
+            std::cout << rot.cipher(parseArgs(3, argc, argv), variant);
+
+            return 0;
         }
     }
+
+    std::cout << rot.cipher(parseArgs(1, argc, argv), variant);
+
     return 0;
 }
