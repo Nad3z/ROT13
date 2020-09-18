@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 
     if (argc >= 2) {
         if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0){
-            std::cout << "Usage: rot13 [OPTION]...\n\n"
+            std::cout << "Usage: ROT13 [OPTION]...\n\n"
                          "Options:\n"
                          "  --help, -h            Show this help message.\n"
                          "  --variant, -v=i       Change the variant [5, 13, 18, 47] (Default: 13).\n";
